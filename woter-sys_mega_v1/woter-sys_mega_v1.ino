@@ -103,7 +103,7 @@ Hk = AM2320.hum * 0.73;    // Поправочный коэффициент вл
 
 if(digitalRead(SEN_IN) == LOW){    // Условие включения светодиода и реле закрытия подачи воды в бак при протечке
     digitalWrite(LED_p_in1, HIGH);
-    K1 = 1;
+    K3 = 1;
 //    digitalWrite(RELEY_IN, HIGH);
   } else {
     digitalWrite(LED_p_in1, LOW);
