@@ -71,14 +71,16 @@ void setup()
      pr[j] = analogRead(DP);
    } 
    
-//  pinMode(RELEY_UL, OUTPUT);    // Реле закрытия воды на улицу
-  pinMode(SEN_IN, INPUT);         // Датчик перелива
-  pinMode(LED_p_in1, OUTPUT);     // Светодиод перелива
-  pinMode(RELEY_In_On, OUTPUT);    // Реле открытия подачи воды в бак
-  pinMode(RELEY_In_Off, OUTPUT);    // Реле закрытия подачи воды в бак
-  pinMode(LED_p_in2, OUTPUT);    // Светодиод когда давление воды на входе 0
-  pinMode(buttonPin1, INPUT);    // Инициализируем пин, подключенный к кнопке отключения светодиода перелива, как вход
-  pinMode(buttonPin2, INPUT);    // Инициализируем пин, подключенный к кнопке отключения светодиода отсутствия давления воды на входе, как вход
+//  pinMode(RELEY_UL, OUTPUT);        // Реле закрытия воды на улицу
+  pinMode(SEN_IN, INPUT);             // Датчик перелива
+  pinMode(LED_p_in1, OUTPUT);         // Светодиод перелива
+  pinMode(RELEY_In_On, OUTPUT);       // Реле открытия подачи воды в бак
+  digitalWrite(RELEY_In_On, HIGH);    // Выключаем реле подачи воды в бак - посылаем высокий сигнал
+  pinMode(RELEY_In_Off, OUTPUT);      // Реле закрытия подачи воды в бак
+  digitalWrite(RELEY_In_Off, HIGH);   // Выключаем реле закрытия подачи воды в бак - посылаем высокий сигнал
+  pinMode(LED_p_in2, OUTPUT);         // Светодиод когда давление воды на входе 0
+  pinMode(buttonPin1, INPUT);         // Инициализируем пин, подключенный к кнопке отключения светодиода перелива, как вход
+  pinMode(buttonPin2, INPUT);         // Инициализируем пин, подключенный к кнопке отключения светодиода отсутствия давления воды на входе, как вход
 }
 
 void loop()
@@ -112,15 +114,15 @@ Hk = AM2320.hum * 0.73;    // Поправочный коэффициент вл
 if(digitalRead(SEN_IN) == LOW){    // Условие включения светодиода и реле закрытия подачи воды в бак при протечке
     digitalWrite(LED_p_in1, HIGH);
     K3 = 1;
-    time8 = millis();  
+//    time8 = millis();  
   } else {
     digitalWrite(LED_p_in1, LOW);
-//    digitalWrite(RELEY_IN, LOW);
+//    digitalWrite(RELEY_In_Off, HIGH); - ????
   }
-//if ((K1 == 1 && millis() - time8 > 20000) || (K3 == 1 && millis() - time8 > 20000)) {            // Подача напряжения на электро кран для закрытия подачи воды в бак 20 секунд
-//  digitalWrite(RELEY_In_Off, HIGH);
+//if ((K1 == 1 && millis() - time8 > 20000) || (K3 == 1 && millis() - time8 > 20000)) {  // Подача напряжения на электро кран для закрытия подачи воды в бак 20 секунд
+//  digitalWrite(RELEY_In_Off, LOW);   Включение реле
 //} else {
-//  digitalWrite(RELEY_In_Off, LOW);
+//  digitalWrite(RELEY_In_Off, HIGH);
 //}
 
   
@@ -141,6 +143,7 @@ if(p_in > 0){       // Изменение значения переменной 
 if(p_in == 0 && millis() - time1 > 300000 && K1 == 0){       // Условие включения светодиода когда давление воды на входе равно 0 в течении 5 минут
     digitalWrite(LED_p_in2, HIGH);
     K1 = 1;                                 // Коэффициент, для мигания светодиода после подачи воды
+//    time8 = millis();
   }
 
 if(p_in > 0 && K1 > 0 && millis() - time0 > 500){          // Условие мигания светодиода после подачи воды
