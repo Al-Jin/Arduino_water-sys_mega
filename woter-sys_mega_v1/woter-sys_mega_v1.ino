@@ -137,7 +137,7 @@ if(digitalRead(SEN_IN) == LOW){    // Условие включения свет
 //}
 
   
-if(SEN_IN != LOW && K3 > 0 && millis() - time4 > 500){       // Условие мигания светодиода протечки при понижении уровня воды до нормального
+if(digitalRead(SEN_IN) != LOW && K3 > 0 && millis() - time4 > 500){       // Условие мигания светодиода протечки при понижении уровня воды до нормального
     digitalWrite(LED_p_in1, !digitalRead(LED_p_in1));        // включаем / выключаем LED
     time4 = millis();
   }  
